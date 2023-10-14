@@ -7,10 +7,6 @@ const Dashboard = lazy(() => import('./dashboard/Dashboard'));
 const Buttons = lazy(() => import('./basic-ui/Buttons'));
 const Dropdowns = lazy(() => import('./basic-ui/Dropdowns'));
 const Typography = lazy(() => import('./basic-ui/Typography'));
-
-
-
-
 const BasicElements = lazy(() => import('./form-elements/BasicElements'));
 const BasicTable = lazy(() => import('./tables/BasicTable'));
 const Mdi = lazy(() => import('./icons/Mdi'));
@@ -28,7 +24,7 @@ function AppRoutes() {
       <Routes>
         {/* Uncomment this if you have a Home component */}
         {/* <Route path="/home" element={<Home />} /> */}
-        <Route path="/dashboard" element={<Dashboard()} />
+        <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/basic-ui/buttons" element={<Buttons />} />
         <Route path="/basic-ui/dropdowns" element={<Dropdowns />} />
         <Route path="/basic-ui/typography" element={<Typography />} />
