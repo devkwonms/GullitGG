@@ -9,7 +9,7 @@ const Loadable = (Component) => (props) => {
   const { pathname } = useLocation();
 
   return (
-    <Suspense fallback={<Spinner isDashboard={pathname.includes("/dashboard")} />}>
+    <Suspense fallback={<Spinner />}>
       <Component {...props} />
     </Suspense>
   );
@@ -21,7 +21,7 @@ export default function Router() {
     // Dashboard Routes
     {
       path: "/",
-      element: <MainLayout />,
+      element: <MainLayout text={"텍스트"} asfjkl={"aa"} />,
       children: [{ element: <Dashboard />, index: true }],
     },
     // <Suspense fallback={<Spinner />}>
