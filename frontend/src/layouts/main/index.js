@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 // config
 //
 
-export default function MainLayout() {
+export default function MainLayout(param) {
   return (
     <div>
       <Outlet />
