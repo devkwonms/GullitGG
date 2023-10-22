@@ -26,7 +26,7 @@ export default function Router() {
       children: [
         { index: true, element: <Home /> },
         {
-          path: "/dashboard",
+          path: "/user/:nickname",
           element: <Dashboard />,
         },
         {
