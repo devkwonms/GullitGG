@@ -30,10 +30,6 @@ export default function Router() {
           element: <Dashboard />,
         },
         {
-          path: "/basic-ui/buttons",
-          element: <Buttons />,
-        },
-        {
           path: "/user-pages/login-1",
           element: <Login />,
         },
