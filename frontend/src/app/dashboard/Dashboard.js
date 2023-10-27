@@ -13,9 +13,28 @@ const mapData = {
   RO: 10.25,
   GE: 33.25,
 };
-// const { nickname } = useParams();
-// console.log(nickname + "!");
+
 function Dashboard() {
+  const { nickname } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState({});
+
+  const getUser = async () => {
+    const requestOptions = {
+      method: "GET",
+    };
+    const json = await (await fetch(`/api/userSearch?nickname=${nickname}`, requestOptions)).json();
+    setUser(json);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (user) {
+      getUser();
+    }
+  }, []);
+  console.log(user);
+  console.log(user?.userSearchDto?.accessId);
   const transactionHistoryData = {
     labels: ["Paypal", "Stripe", "Cash"],
     datasets: [
@@ -78,7 +97,9 @@ function Dashboard() {
                   />
                 </div>
                 <div className="col-5 col-sm-7 col-xl-8 p-0">
-                  <h4 className="mb-1 mb-sm-0">구단주명</h4>
+                  <h4 className="mb-1 mb-sm-0">
+                    LV.{user?.userSearchDto?.level} {user?.userSearchDto?.nickName}
+                  </h4>
                   {/* <p className="mb-0 font-weight-normal d-none d-sm-block">Corona admin template now with a new facelift for enhanced legibility and aesthetics!</p> */}
                 </div>
                 <div className="col-3 col-sm-2 col-xl-2 pl-0 text-center">
@@ -114,7 +135,7 @@ function Dashboard() {
         <div className="col-sm-4 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>감독모드 최고티어</h5>
+              <h5>공식경기 최고티어</h5>
               <div className="row">
                 <div className="col-8 col-sm-12 col-xl-8 my-auto">
                   <div className="d-flex d-sm-block d-md-flex align-items-center">
@@ -134,7 +155,7 @@ function Dashboard() {
         <div className="col-sm-4 grid-margin">
           <div className="card">
             <div className="card-body">
-              <h5>볼타모드 최고티어</h5>
+              <h5>감독모드 최고티어</h5>
               <div className="row">
                 <div className="col-8 col-sm-12 col-xl-8 my-auto">
                   <div className="d-flex d-sm-block d-md-flex align-items-center">
@@ -617,54 +638,6 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        {/* <div className="col-md-6 col-xl-4 grid-margin stretch-card">
-            <div className="card">
-              <div className="card-body">
-                <h4 className="card-title">Portfolio Slide</h4>
-                <Slider className="portfolio-slider" {...this.sliderSettings}>
-                  <div className="item">
-                    <img src={require('../../assets/images/dashboard/Rectangle.jpg')} alt="carousel-item" />
-                  </div>
-                  <div className="item">
-                    <img src={require('../../assets/images/dashboard/Img_5.jpg')} alt="carousel-item" />
-                  </div>
-                  <div className="item">
-                    <img src={require('../../assets/images/dashboard/img_6.jpg')} alt="carousel-item" />
-                  </div>
-                </Slider>
-                <div className="d-flex py-4">
-                  <div className="preview-list w-100">
-                    <div className="preview-item p-0">
-                      <div className="preview-thumbnail">
-                        <img src={require('../../assets/images/faces/face12.jpg')} className="rounded-circle" alt="face" />
-                      </div>
-                      <div className="preview-item-content d-flex flex-grow">
-                        <div className="flex-grow">
-                          <div className="d-flex d-md-block d-xl-flex justify-content-between">
-                            <h6 className="preview-subject">CeeCee Bass</h6>
-                            <p className="text-muted text-small">4 Hours Ago</p>
-                          </div>
-                          <p className="text-muted">Well, it seems to be working now.</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <p className="text-muted">Well, it seems to be working now. </p>
-                <div className="progress progress-md portfolio-progress">
-                  <div className="progress-bar bg-success" role="progressbar" style={{width: '50%'}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-12 col-xl-4 grid-margin stretch-card">
-            <div className="card">
-              <div className="card-body">
-                <h4 className="card-title">To do list</h4>
-                <TodoListComponent />
-              </div>
-            </div>
-          </div> */}
       </div>
       <div className="row">
         <div className="col-12">
