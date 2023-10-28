@@ -19,6 +19,12 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
 
+  // matchList 관련 useState
+  const [matchType, setMatchType] = useState(50);
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(10);
+
+  // userInfo api호출 (fetch)
   const getUser = async () => {
     const requestOptions = {
       method: "GET",
@@ -35,6 +41,40 @@ function Dashboard() {
   }, []);
   console.log(user);
   console.log(user?.userSearchDto?.accessId);
+
+  // matchList api 호출 (fetch)
+  const getMatchList = async (matchType, offset) => {
+    const requestOptions = {
+      method: "GET",
+    };
+    if (matchType === 50 || matchType === 40 || matchType === 52) {
+      const json = await (
+        await fetch(
+          `/api/matches?accessId=${accessId}&matchtype=${matchType}&offset=${offset}&limit=${limit}`,
+          requestOptions
+        )
+      ).json();
+      setList(json);
+    }
+
+    // matchType 에러시 예외처리 구문(미완)
+    // else if(matchType === 10){
+    //   const json = await (await fetch(`/api/userSearch/호날두`, requestOptions)).json();
+    //   setList(json);
+    // }
+    // else{
+    //   console.log("fetch error!");
+    // }
+  };
+  console.log();
+  useEffect(() => {
+    getMatchList(matchType, offset);
+  }, [matchType, offset]);
+
+  const handleLoadMore = () => {
+    setOffset(offset + 10); // increase the number of matches to display by 10
+  };
+
   const transactionHistoryData = {
     labels: ["Paypal", "Stripe", "Cash"],
     datasets: [
