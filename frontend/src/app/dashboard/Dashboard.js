@@ -14,12 +14,13 @@ const mapData = {
   GE: 33.25,
 };
 
-function Dashboard() {
+function Dashboard({ accessId }) {
   const { nickname } = useParams();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
 
   // matchList 관련 useState
+  const [list, setList] = useState([]);
   const [matchType, setMatchType] = useState(50);
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(10);
