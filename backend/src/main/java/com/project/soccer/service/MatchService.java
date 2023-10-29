@@ -98,7 +98,7 @@ public class MatchService {
 //        // 선수 이름, 선수이미지url 추출
         JSONArray spNameJson = setMatchPlayerNameApi(matchDto);
 
-        log.info("matchDto = {}", matchDto);
+        // log.info("matchDto = {}", matchDto);
         return matchDto;
     }
 
