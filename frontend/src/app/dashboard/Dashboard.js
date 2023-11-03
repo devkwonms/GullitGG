@@ -14,7 +14,7 @@ const mapData = {
   GE: 33.25,
 };
 
-function Dashboard({ accessId }) {
+function Dashboard() {
   const { nickname } = useParams();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
@@ -34,14 +34,18 @@ function Dashboard({ accessId }) {
     setUser(json);
     setLoading(false);
   };
-
   useEffect(() => {
     if (user) {
       getUser();
     }
   }, []);
-  console.log(user);
-  console.log(user?.userSearchDto?.accessId);
+
+  useEffect(() => {
+    console.log(user);
+    console.log(user?.userSearchDto?.accessId);
+  }, [user]); // user 상태가 변경될 때만 실행
+
+  const accessId = user?.userSearchDto?.accessId;
 
   // matchList api 호출 (fetch)
   const getMatchList = async (matchType, offset) => {
