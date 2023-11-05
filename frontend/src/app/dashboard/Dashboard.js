@@ -4,6 +4,7 @@ import { Doughnut } from "react-chartjs-2";
 import Slider from "react-slick";
 import { TodoListComponent } from "../apps/TodoList";
 import { VectorMap } from "react-jvectormap";
+import useDidMountEffect from "../customhook/useDidMountEffect";
 
 const mapData = {
   BZ: 75.0,
@@ -25,56 +26,59 @@ function Dashboard() {
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(10);
 
-  // userInfo api호출 (fetch)
+  // userInfo api 호출 (fetch)
   const getUser = async () => {
-    const requestOptions = {
-      method: "GET",
-    };
-    const json = await (await fetch(`/api/userSearch?nickname=${nickname}`, requestOptions)).json();
-    setUser(json);
-    setLoading(false);
-  };
-  useEffect(() => {
-    if (user) {
-      getUser();
+    try {
+      const requestOptions = {
+        method: "GET",
+      };
+      const json = await (await fetch(`/api/userSearch?nickname=${nickname}`, requestOptions)).json();
+      setUser(json);
+      setLoading(false);
+      console.log(json);
+      return json; // Return the user data for the next step
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
-  }, []);
+  };
+
+  // matchList api 호출 (fetch)
+  const getMatchList = async (matchType, offset) => {
+    try {
+      const accessId = user?.userSearchDto?.accessId;
+      if (matchType === 50 || matchType === 40 || matchType === 52) {
+        const requestOptions = {
+          method: "GET",
+        };
+        const json = await (
+          await fetch(
+            `/api/matches?accessId=${accessId}&matchtype=${matchType}&offset=${offset}&limit=${limit}`,
+            requestOptions
+          )
+        ).json();
+        setList(json);
+        console.log(json);
+      }
+    } catch (error) {
+      console.error("Error fetching match list:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userData = await getUser(); // getUser가 완료될 때까지 기다립니다.
+      if (userData) {
+        getMatchList(matchType, offset);
+      }
+    };
+
+    fetchData();
+  }, [matchType, offset]);
 
   useEffect(() => {
     console.log(user);
     console.log(user?.userSearchDto?.accessId);
   }, [user]); // user 상태가 변경될 때만 실행
-
-  const accessId = user?.userSearchDto?.accessId;
-
-  // matchList api 호출 (fetch)
-  const getMatchList = async (matchType, offset) => {
-    const requestOptions = {
-      method: "GET",
-    };
-    if (matchType === 50 || matchType === 40 || matchType === 52) {
-      const json = await (
-        await fetch(
-          `/api/matches?accessId=${accessId}&matchtype=${matchType}&offset=${offset}&limit=${limit}`,
-          requestOptions
-        )
-      ).json();
-      setList(json);
-    }
-
-    // matchType 에러시 예외처리 구문(미완)
-    // else if(matchType === 10){
-    //   const json = await (await fetch(`/api/userSearch/호날두`, requestOptions)).json();
-    //   setList(json);
-    // }
-    // else{
-    //   console.log("fetch error!");
-    // }
-  };
-  console.log();
-  useEffect(() => {
-    getMatchList(matchType, offset);
-  }, [matchType, offset]);
 
   const handleLoadMore = () => {
     setOffset(offset + 10); // increase the number of matches to display by 10
