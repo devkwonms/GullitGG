@@ -32,7 +32,9 @@ function Dashboard() {
       const requestOptions = {
         method: "GET",
       };
-      const json = await (await fetch(`/api/userSearch?nickname=${nickname}`, requestOptions)).json();
+      const json = await (await fetch(`/api/userSearch?nickname=${nickname}`, requestOptions))
+        .then((response) => response.json())
+        .then((json) => console.log(json));
       setUser(json);
       setLoading(false);
       console.log(json);
@@ -55,6 +57,8 @@ function Dashboard() {
             `/api/matches?accessId=${accessId}&matchtype=${matchType}&offset=${offset}&limit=${limit}`,
             requestOptions
           )
+            .then((response) => response.json())
+            .then((json) => console.log(json))
         ).json();
         setList(json);
         console.log(json);
