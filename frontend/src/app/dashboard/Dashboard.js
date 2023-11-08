@@ -57,9 +57,10 @@ function Dashboard() {
             `/api/matches?accessId=${accessId}&matchtype=${matchType}&offset=${offset}&limit=${limit}`,
             requestOptions
           )
-            .then((response) => response.json())
-            .then((json) => console.log(json))
-        ).json();
+        )
+          // .then((response) => response.json())
+          // .then((json) => console.log(json))
+          .json();
         setList(json);
         console.log(json);
       }

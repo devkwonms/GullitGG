@@ -29,16 +29,10 @@ export default function Router() {
           path: "/user/:nickname",
           element: <Dashboard />,
         },
-        {
-          path: "/user-pages/login-1",
-          element: <Login />,
-        },
       ],
     },
     <Router fallback={<Spinner />}>
       <Routes>
-        {/* Uncomment this if you have a Home component */}
-        {/* <Route path="/home" element={<Home />} /> */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/basic-ui/buttons" element={<Buttons />} />
         <Route path="/basic-ui/dropdowns" element={<Dropdowns />} />
