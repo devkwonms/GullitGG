@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import { TodoListComponent } from "../apps/TodoList";
 import { VectorMap } from "react-jvectormap";
 import useDidMountEffect from "../customhook/useDidMountEffect";
+import axios from "axios";
 
 const mapData = {
   BZ: 75.0,
@@ -29,16 +30,12 @@ function Dashboard() {
   // userInfo api 호출 (fetch)
   const getUser = async () => {
     try {
-      const requestOptions = {
-        method: "GET",
-      };
-      const json = await (await fetch(`/api/userSearch?nickname=${nickname}`, requestOptions))
-        .then((response) => response.json())
-        .then((json) => console.log(json));
-      setUser(json);
+      const response = await axios.get(`/api/userSearch?nickname=${nickname}`);
+      const userData = response.data;
+      setUser(userData);
       setLoading(false);
-      console.log(json);
-      return json; // Return the user data for the next step
+      console.log(userData);
+      return userData;
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -49,20 +46,12 @@ function Dashboard() {
     try {
       const accessId = user?.userSearchDto?.accessId;
       if (matchType === 50 || matchType === 40 || matchType === 52) {
-        const requestOptions = {
-          method: "GET",
-        };
-        const json = await (
-          await fetch(
-            `/api/matches?accessId=${accessId}&matchtype=${matchType}&offset=${offset}&limit=${limit}`,
-            requestOptions
-          )
-        )
-          // .then((response) => response.json())
-          // .then((json) => console.log(json))
-          .json();
-        setList(json);
-        console.log(json);
+        const response = await axios.get(
+          `/api/matches?accessId=${accessId}&matchtype=${matchType}&offset=${offset}&limit=${limit}`
+        );
+        const matchList = response.data;
+        setList(matchList);
+        console.log(matchList);
       }
     } catch (error) {
       console.error("Error fetching match list:", error);
