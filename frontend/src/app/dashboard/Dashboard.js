@@ -42,9 +42,9 @@ function Dashboard() {
   };
 
   // matchList api 호출 (fetch)
-  const getMatchList = async (matchType, offset) => {
+  const getMatchList = async (accessId, matchType, offset) => {
     try {
-      const accessId = user?.userSearchDto?.accessId;
+      // const accessId = user?.userSearchDto?.accessId;
       if (matchType === 50 || matchType === 40 || matchType === 52) {
         const response = await axios.get(
           `/api/matches?accessId=${accessId}&matchtype=${matchType}&offset=${offset}&limit=${limit}`
@@ -62,17 +62,15 @@ function Dashboard() {
     const fetchData = async () => {
       const userData = await getUser(); // getUser가 완료될 때까지 기다립니다.
       if (userData) {
-        getMatchList(matchType, offset);
+        const accessId = userData?.userSearchDto?.accessId;
+        if (accessId) {
+          getMatchList(accessId, matchType, offset);
+        }
       }
     };
 
     fetchData();
   }, [matchType, offset]);
-
-  useEffect(() => {
-    console.log(user);
-    console.log(user?.userSearchDto?.accessId);
-  }, [user]); // user 상태가 변경될 때만 실행
 
   const handleLoadMore = () => {
     setOffset(offset + 10); // increase the number of matches to display by 10
