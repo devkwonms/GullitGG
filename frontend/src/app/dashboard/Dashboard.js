@@ -150,6 +150,18 @@ function Dashboard() {
         </div>
       </div>
       {/* 티어 표시 (공식)*/}
+      <Tabs
+        value={matchType}
+        onChange={(e, newMatchType) => {
+          setMatchType(newMatchType);
+        }}
+        aria-label="basic tabs example"
+      >
+        <Tab label="공식경기" value={50} />
+        <Tab label="친선경기" value={40} />
+        <Tab label="감독모드" value={52} />
+        {/* <Tab label="나의 선수랭킹" value={10} /> */}
+      </Tabs>
       <div className="row">
         <div className="col-sm-4 grid-margin">
           <div className="card">
